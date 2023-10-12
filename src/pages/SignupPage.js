@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -6,9 +6,11 @@ import { Link } from "react-router-dom";
 import "./Signup.css";
 
 export default function SignupPage() {
-  const onSubmit = (data) => {
-    console.log("Form submitted");
-    console.log(data);
+  const [data, setData] = useState([]);
+  const onSubmit = (submittedData) => {
+    // setData([...(localStorage.getItem("users")), submittedData]);
+    console.log(localStorage.getItem("users"));
+    // localStorage.setItem("users", data);
   };
 
   let regex =
