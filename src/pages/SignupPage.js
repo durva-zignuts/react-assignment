@@ -2,8 +2,8 @@ import React from "react";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { Link } from "react-router-dom";
 import "./Signup.css";
-import "yup-phone";
 
 export default function SignupPage() {
   const onSubmit = (data) => {
@@ -11,13 +11,27 @@ export default function SignupPage() {
     console.log(data);
   };
 
+  let regex =
+    /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/;
+
   const schema = yup.object().shape({
     firstName: yup.string().required(),
     lastName: yup.string().required(),
-    mobileNumber: yup.number().required(),
+    mobileNumber: yup.string().min(10).max(10).required(),
     email: yup.string().email().required(),
-    password: yup.string().required().max(20).min(4),
-    confirmPassword: yup.string().oneOf([yup.ref("password")], null),
+    password: yup
+      .string()
+      .required()
+      .max(32)
+      .min(8)
+      .matches(
+        regex,
+        "Password must contain at least 8 characters, one uppercase, one number and one special case character"
+      ),
+    confirmPassword: yup
+      .string()
+      .oneOf([yup.ref("password")], null)
+      .required(),
   });
 
   const {
@@ -97,8 +111,11 @@ export default function SignupPage() {
           />
         </div>
         {errors.confirmPassword && <h4>{errors.confirmPassword.message}</h4>}
-        <button type="submit">Submit</button>
-        {console.log("errors : ", errors)}
+        <div>
+          <button type="submit">Submit</button>
+          {console.log("errors : ", errors)}
+          <Link to="/login">Login</Link>
+        </div>
       </form>
     </div>
   );
