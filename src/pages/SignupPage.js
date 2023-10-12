@@ -1,20 +1,20 @@
-import React, { useState } from "react";
-import * as yup from "yup";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { Link } from "react-router-dom";
-import "./Signup.css";
+import React, { useEffect, useState } from "react"
+import * as yup from "yup"
+import { useForm } from "react-hook-form"
+import { yupResolver } from "@hookform/resolvers/yup"
+import { Link } from "react-router-dom"
+import "./Signup.css"
 
+localStorage.setItem("users", [])
 export default function SignupPage() {
-  const [data, setData] = useState([]);
   const onSubmit = (submittedData) => {
-    // setData([...(localStorage.getItem("users")), submittedData]);
-    console.log(localStorage.getItem("users"));
-    // localStorage.setItem("users", data);
-  };
+    let users = JSON.parse(localStorage.getItem("users") || "[]")
+    users.push(submittedData)
+    localStorage.setItem("users", JSON.stringify(users))
+  }
 
   let regex =
-    /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/;
+    /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/
 
   const schema = yup.object().shape({
     firstName: yup.string().required(),
@@ -34,13 +34,13 @@ export default function SignupPage() {
       .string()
       .oneOf([yup.ref("password")], null)
       .required(),
-  });
+  })
 
   const {
     handleSubmit,
     register,
     formState: { errors },
-  } = useForm({ resolver: yupResolver(schema) });
+  } = useForm({ resolver: yupResolver(schema) })
 
   return (
     <div>
@@ -120,5 +120,5 @@ export default function SignupPage() {
         </div>
       </form>
     </div>
-  );
+  )
 }
