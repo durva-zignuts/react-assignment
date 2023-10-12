@@ -7,7 +7,6 @@ import LoginPage from "./pages/LoginPage";
 function App() {
   return (
     <div className="App">
-      {/* <SignupPage /> */}
       <Router>
         <Routes>
           <Route path="/" element={<HomePage />} />
