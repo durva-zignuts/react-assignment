@@ -1,7 +1,12 @@
-import React from 'react'
+import React from "react";
 
 export default function LoginPage() {
   return (
-    <div>LoginPage</div>
-  )
+    <div>
+      LoginPage{" "}
+      <form action="">
+        <input type="text" />
+      </form>
+    </div>
+  );
 }
