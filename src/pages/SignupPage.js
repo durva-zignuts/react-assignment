@@ -4,14 +4,48 @@ import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { Link } from "react-router-dom"
 import "./Signup.css"
+import bcrypt from "bcryptjs-react"
 
-localStorage.setItem("users", [])
 export default function SignupPage() {
+  const [users, setUsers] = useState([])
+  const [successMessage, setSuccessMessage] = useState("")
+  let userData = ""
+
   const onSubmit = (submittedData) => {
-    let users = JSON.parse(localStorage.getItem("users") || "[]")
-    users.push(submittedData)
-    localStorage.setItem("users", JSON.stringify(users))
+    const salt = bcrypt.genSaltSync(10)
+    const hash = bcrypt.hashSync(submittedData.password, salt)
+
+    submittedData.password = hash
+    submittedData.confirmPassword = hash
+
+    // Check If the User is Already Registered or Not
+    userData = users?.filter((user) => {
+      return user.email === submittedData.email
+    })
+
+    if (userData.length > 0) {
+      return
+    } else {
+      const newUser = { ...submittedData }
+      setUsers((prevUsers) => [...prevUsers, newUser])
+      localStorage.setItem("currentSignUpUser", JSON.stringify(submittedData))
+
+      setSuccessMessage("Signup successful!")
+
+      // Clear the success message after 5 seconds (5000 milliseconds)
+      setTimeout(() => {
+        setSuccessMessage("")
+      }, 5000)
+    }
+
+    // let users = JSON.parse(localStorage.getItem("users") || "[]")
+    // users.push(submittedData)
+    // localStorage.setItem("users", JSON.stringify(users))
   }
+
+  useEffect(() => {
+    localStorage.setItem("users", JSON.stringify(users))
+  }, [users])
 
   let regex =
     /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/
@@ -32,7 +66,7 @@ export default function SignupPage() {
       ),
     confirmPassword: yup
       .string()
-      .oneOf([yup.ref("password")], null)
+      .oneOf([yup.ref("password"), null], "Passwords must match")
       .required(),
   })
 
@@ -44,6 +78,8 @@ export default function SignupPage() {
 
   return (
     <div>
+      {userData.length > 0 && <p>User Already Exists.</p>}
+      {successMessage && <p className="success-message">{successMessage}</p>}
       <form onSubmit={handleSubmit(onSubmit)} className="signupForm">
         <div className="input-div">
           <label htmlFor="firstName">First Name</label>
@@ -114,7 +150,7 @@ export default function SignupPage() {
         </div>
         {errors.confirmPassword && <h4>{errors.confirmPassword.message}</h4>}
         <div>
-          <button type="submit">Submit</button>
+          <button type="submit">SignUp</button>
           {console.log("errors : ", errors)}
           <Link to="/login">Login</Link>
         </div>
