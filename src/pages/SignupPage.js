@@ -9,6 +9,8 @@ import bcrypt from "bcryptjs-react"
 export default function SignupPage() {
   const [users, setUsers] = useState([])
   const [successMessage, setSuccessMessage] = useState("")
+  const [error, setError] = useState(false)
+
   let userData = ""
 
   const onSubmit = (submittedData) => {
@@ -22,9 +24,14 @@ export default function SignupPage() {
     userData = users?.filter((user) => {
       return user.email === submittedData.email
     })
-
+    console.log("userdata", userData.length)
     if (userData.length > 0) {
-      return
+      // return
+      setError(true)
+
+      setTimeout(() => {
+        setError(false)
+      }, 5000)
     } else {
       const newUser = { ...submittedData }
       setUsers((prevUsers) => [...prevUsers, newUser])
@@ -78,7 +85,7 @@ export default function SignupPage() {
 
   return (
     <div>
-      {userData.length > 0 && <p>User Already Exists.</p>}
+      {error && <p>User Already Exists.</p>}
       {successMessage && <p className="success-message">{successMessage}</p>}
       <form onSubmit={handleSubmit(onSubmit)} className="signupForm">
         <div className="input-div">
