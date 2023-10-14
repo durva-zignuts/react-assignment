@@ -8,6 +8,7 @@ import Products from "./pages/Products"
 import { AuthProvider } from "./utils/auth"
 import RequireAuth from "./components/RequireAuth"
 import SingleProduct from "./pages/SingleProduct"
+import { ChangePassword } from "./pages/ChangePassword"
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
                 </RequireAuth>
               }
             />
+            <Route path="/changepassword" element={<ChangePassword />} />
           </Routes>
         </Router>
       </div>
