@@ -10,6 +10,9 @@ import RequireAuth from "./components/RequireAuth"
 import SingleProduct from "./pages/SingleProduct"
 import { ChangePassword } from "./pages/ChangePassword"
 
+export const regex =
+  /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/
+
 function App() {
   return (
     <AuthProvider>
@@ -43,7 +46,14 @@ function App() {
                 </RequireAuth>
               }
             />
-            <Route path="/changepassword" element={<ChangePassword />} />
+            <Route
+              path="/changepassword"
+              element={
+                <RequireAuth>
+                  <ChangePassword />
+                </RequireAuth>
+              }
+            />
           </Routes>
         </Router>
       </div>
