@@ -7,7 +7,7 @@ import "./Signup.css"
 import bcrypt from "bcryptjs-react"
 
 export default function SignupPage() {
-  const [users, setUsers] = useState([])
+  // const [users, setUsers] = useState([])
   const [successMessage, setSuccessMessage] = useState("")
   const [error, setError] = useState(false)
 
@@ -19,6 +19,7 @@ export default function SignupPage() {
 
     submittedData.password = hash
     submittedData.confirmPassword = hash
+    let users = JSON.parse(localStorage.getItem("users") || "[]")
 
     // Check If the User is Already Registered or Not
     userData = users?.filter((user) => {
@@ -33,10 +34,12 @@ export default function SignupPage() {
         setError(false)
       }, 5000)
     } else {
-      const newUser = { ...submittedData }
-      setUsers((prevUsers) => [...prevUsers, newUser])
-      localStorage.setItem("currentSignUpUser", JSON.stringify(submittedData))
+      // const newUser = { ...submittedData }
+      // setUsers((prevUsers) => [...prevUsers, newUser])
+      // localStorage.setItem("currentSignUpUser", JSON.stringify(submittedData))
 
+      users.push(submittedData)
+      localStorage.setItem("users", JSON.stringify(users))
       setSuccessMessage("Signup successful!")
 
       // Clear the success message after 5 seconds (5000 milliseconds)
@@ -50,9 +53,9 @@ export default function SignupPage() {
     // localStorage.setItem("users", JSON.stringify(users))
   }
 
-  useEffect(() => {
-    localStorage.setItem("users", JSON.stringify(users))
-  }, [users])
+  // useEffect(() => {
+  //   localStorage.setItem("users", JSON.stringify(users))
+  // }, [users])
 
   let regex =
     /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/
