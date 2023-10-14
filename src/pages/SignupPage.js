@@ -4,7 +4,8 @@ import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { Link } from "react-router-dom"
 import "./Signup.css"
-import bcrypt from "bcryptjs-react"
+import { regex } from "../App"
+import { encryptPassword } from "../utils/helperFunctions"
 
 export default function SignupPage() {
   // const [users, setUsers] = useState([])
@@ -14,17 +15,18 @@ export default function SignupPage() {
   let userData = ""
 
   const onSubmit = (submittedData) => {
-    const salt = bcrypt.genSaltSync(10)
-    const hash = bcrypt.hashSync(submittedData.password, salt)
+    const hash = encryptPassword(submittedData.password)
 
     submittedData.password = hash
     submittedData.confirmPassword = hash
+
     let users = JSON.parse(localStorage.getItem("users") || "[]")
 
     // Check If the User is Already Registered or Not
     userData = users?.filter((user) => {
       return user.email === submittedData.email
     })
+
     console.log("userdata", userData.length)
     if (userData.length > 0) {
       // return
@@ -56,9 +58,6 @@ export default function SignupPage() {
   // useEffect(() => {
   //   localStorage.setItem("users", JSON.stringify(users))
   // }, [users])
-
-  let regex =
-    /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/
 
   const schema = yup.object().shape({
     firstName: yup.string().required(),

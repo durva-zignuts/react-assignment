@@ -44,9 +44,10 @@ const Profile = () => {
     console.log(emailExists.length)
 
     if (emailExists.length > 0 && submittedData.email !== data?.email) {
+      setError("Email Already exists.")
       setTimeout(() => {
-        setError("Email Already exists.")
-      }, 5000)
+        setError("")
+      }, 2000)
     } else {
       if (userIndex !== -1) {
         // Update the user's data with the submitted data
@@ -84,7 +85,7 @@ const Profile = () => {
   return (
     <div>
       <Navbar />
-      {error && <p>User Already Exists.</p>}
+      {error && <p>{error}</p>}
       {successMessage && <p className="success-message">{successMessage}</p>}
       <form onSubmit={handleSubmit(onSubmit)} className="signupForm">
         <div className="input-div">

@@ -9,14 +9,12 @@ import { useState } from "react"
 
 import "./Signup.css"
 import { useAuth } from "../utils/auth"
+import { regex } from "../App"
 
 export default function LoginPage() {
   const navigate = useNavigate()
   const [error, setError] = useState("")
   const auth = useAuth()
-
-  let regex =
-    /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/
 
   const schema = yup.object().shape({
     email: yup.string().email().required(),
@@ -31,7 +29,7 @@ export default function LoginPage() {
     const userData = allUsersData?.filter((user) => {
       return user.email === submittedData.email
     })
-    console.log("logiin", userData)
+    console.log("login", userData)
     if (userData?.length > 0) {
       const result = bcrypt.compareSync(
         submittedData.password,
@@ -40,7 +38,7 @@ export default function LoginPage() {
 
       if (result) {
         // password match
-        auth.login(submittedData)
+        auth.login(userData[0])
         navigate("/products", { replace: true })
       } else {
         setError("Password not match.")
