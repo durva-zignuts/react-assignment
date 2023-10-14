@@ -8,10 +8,12 @@ import bcrypt from "bcryptjs-react"
 import { useState } from "react"
 
 import "./Signup.css"
+import { useAuth } from "../utils/auth"
 
 export default function LoginPage() {
   const navigate = useNavigate()
   const [error, setError] = useState("")
+  const auth = useAuth()
 
   let regex =
     /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/
@@ -26,11 +28,11 @@ export default function LoginPage() {
     // localStorage.setItem("currentLoggedInUser", JSON.stringify(submittedData))
     const allUsersData = JSON.parse(localStorage.getItem("users"))
     console.log(allUsersData)
-    const userData = allUsersData.filter((user) => {
+    const userData = allUsersData?.filter((user) => {
       return user.email === submittedData.email
     })
     console.log("logiin", userData)
-    if (userData.length > 0) {
+    if (userData?.length > 0) {
       const result = bcrypt.compareSync(
         submittedData.password,
         userData[0].password
@@ -38,7 +40,8 @@ export default function LoginPage() {
 
       if (result) {
         // password match
-        navigate("/")
+        auth.login(submittedData)
+        navigate("/", { replace: true })
       } else {
         setError("Password not match.")
       }
