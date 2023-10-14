@@ -34,7 +34,7 @@ const Profile = () => {
 
   const onSubmit = (submittedData) => {
     // console.log("profile", submittedData)
-    const userIndex = allUsers.findIndex((user) => user.email === data.email)
+    const userIndex = allUsers.findIndex((user) => user.email === data?.email)
 
     // check email is already exists or not
     const emailExists = allUsers?.filter(
@@ -43,7 +43,7 @@ const Profile = () => {
 
     console.log(emailExists.length)
 
-    if (emailExists.length > 0 && submittedData.email !== data.email) {
+    if (emailExists.length > 0 && submittedData.email !== data?.email) {
       setTimeout(() => {
         setError("Email Already exists.")
       }, 5000)
@@ -92,10 +92,10 @@ const Profile = () => {
           <input
             type="text"
             placeholder="First Name"
-            {...register("firstName")}
             name="firstName"
-            defaultValue={data.firstName}
+            defaultValue={data?.firstName}
             onChange={handleFieldChange}
+            {...register("firstName")}
           />
         </div>
         {errors.firstName && (
@@ -108,7 +108,7 @@ const Profile = () => {
             placeholder="Last Name"
             name="lastName"
             {...register("lastName")}
-            defaultValue={data.lastName}
+            defaultValue={data?.lastName}
             onChange={handleFieldChange}
           />
         </div>
@@ -122,7 +122,7 @@ const Profile = () => {
             placeholder="Mobile Number"
             name="mobileNumber"
             {...register("mobileNumber")}
-            defaultValue={data.mobileNumber}
+            defaultValue={data?.mobileNumber}
             onChange={handleFieldChange}
           />
         </div>
@@ -136,7 +136,7 @@ const Profile = () => {
             placeholder="Email"
             name="email"
             {...register("email")}
-            defaultValue={data.email}
+            defaultValue={data?.email}
             onChange={handleFieldChange}
           />
         </div>
