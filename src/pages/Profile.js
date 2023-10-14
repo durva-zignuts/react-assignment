@@ -145,7 +145,7 @@ const Profile = () => {
         <div>
           <button type="submit">Save</button>
           {console.log("errors : ", errors)}
-          <Link to="/">Reset Password</Link>
+          <Link to="/changepassword">Reset Password</Link>
         </div>
       </form>
     </div>
