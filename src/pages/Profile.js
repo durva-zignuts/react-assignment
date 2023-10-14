@@ -23,30 +23,49 @@ const Profile = () => {
   const [userData, setUserData] = useState(data)
 
   const handleFieldChange = (event) => {
-    console.log("onchange")
+    // console.log("onchange")
     const { name, value } = event.target
     setUserData({
       ...userData,
       [name]: value,
     })
-    console.log("userdata", userData)
+    // console.log("userdata", userData)
   }
 
   const onSubmit = (submittedData) => {
-    console.log("profile", submittedData)
-    // const userIndex = allUsers.findIndex((user) => user.email === data.email)
-    // if (userIndex !== -1) {
-    //   // Update the user's data with the submitted data
-    //   allUsers[userIndex] = { ...data, ...submittedData }
+    // console.log("profile", submittedData)
+    const userIndex = allUsers.findIndex((user) => user.email === data.email)
 
-    //   // Save the updated data back to local storage
-    //   localStorage.setItem("users", JSON.stringify(allUsers))
+    // check email is already exists or not
+    const emailExists = allUsers?.filter(
+      (user) => user.email === submittedData.email
+    )
 
-    //   // Set a success message
-    //   setSuccessMessage("Profile updated successfully")
-    // } else {
-    //   setError("User not found")
-    // }
+    console.log(emailExists.length)
+
+    if (emailExists.length > 0 && submittedData.email !== data.email) {
+      setTimeout(() => {
+        setError("Email Already exists.")
+      }, 5000)
+    } else {
+      if (userIndex !== -1) {
+        // Update the user's data with the submitted data
+        allUsers[userIndex] = { ...data, ...submittedData }
+
+        // Save the updated data back to local storage
+        localStorage.setItem("users", JSON.stringify(allUsers))
+
+        // Set a success message
+        setSuccessMessage("Profile updated successfully")
+
+        // Clear the success message after 5 seconds (5000 milliseconds)
+        setTimeout(() => {
+          setSuccessMessage("")
+        }, 5000)
+      } else {
+        setError("User not found")
+      }
+    }
   }
 
   const schema = yup.object().shape({
