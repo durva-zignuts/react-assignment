@@ -73,9 +73,9 @@ const Profile = () => {
           <input
             type="text"
             placeholder="First Name"
-            // {...register("firstName")}
+            {...register("firstName")}
             name="firstName"
-            value={data.firstName}
+            defaultValue={data.firstName}
             onChange={handleFieldChange}
           />
         </div>
@@ -88,8 +88,8 @@ const Profile = () => {
             type="text"
             placeholder="Last Name"
             name="lastName"
-            // {...register("lastName")}
-            value={data.lastName}
+            {...register("lastName")}
+            defaultValue={data.lastName}
             onChange={handleFieldChange}
           />
         </div>
@@ -102,8 +102,8 @@ const Profile = () => {
             type="number"
             placeholder="Mobile Number"
             name="mobileNumber"
-            // {...register("mobileNumber")}
-            value={data.mobileNumber}
+            {...register("mobileNumber")}
+            defaultValue={data.mobileNumber}
             onChange={handleFieldChange}
           />
         </div>
@@ -116,8 +116,8 @@ const Profile = () => {
             type="email"
             placeholder="Email"
             name="email"
-            // {...register("email")}
-            value={data.email}
+            {...register("email")}
+            defaultValue={data.email}
             onChange={handleFieldChange}
           />
         </div>
