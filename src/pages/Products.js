@@ -131,7 +131,7 @@ const Products = () => {
       <div>
         <ul>
           {currentProducts.map((product) => (
-            <Link to={`/${product.id}`} key={product.id}>
+            <Link to={`${product.id}`} key={product.id}>
               <li>{product.title}</li>
             </Link>
           ))}
