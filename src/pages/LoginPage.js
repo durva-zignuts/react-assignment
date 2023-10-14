@@ -41,7 +41,7 @@ export default function LoginPage() {
       if (result) {
         // password match
         auth.login(submittedData)
-        navigate("/", { replace: true })
+        navigate("/products", { replace: true })
       } else {
         setError("Password not match.")
       }

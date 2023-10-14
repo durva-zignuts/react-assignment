@@ -7,6 +7,7 @@ import Profile from "./pages/Profile"
 import Products from "./pages/Products"
 import { AuthProvider } from "./utils/auth"
 import RequireAuth from "./components/RequireAuth"
+import SingleProduct from "./pages/SingleProduct"
 
 function App() {
   return (
@@ -30,6 +31,14 @@ function App() {
               element={
                 <RequireAuth>
                   <Products />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/products/:id"
+              element={
+                <RequireAuth>
+                  <SingleProduct />
                 </RequireAuth>
               }
             />
