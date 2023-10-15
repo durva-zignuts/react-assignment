@@ -1,7 +1,15 @@
-import React from 'react'
+import React from "react"
+import Navbar from "../components/Navbar"
+import { useAuth } from "../utils/auth"
+import LoginPage from "./LoginPage"
 
 export default function HomePage() {
+  const auth = useAuth()
+
   return (
-    <div>HomePage</div>
+    <div>
+      {auth.user && <Navbar />}
+      {!auth.user && <LoginPage />}
+    </div>
   )
 }
