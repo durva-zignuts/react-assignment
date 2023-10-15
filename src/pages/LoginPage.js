@@ -18,12 +18,17 @@ export default function LoginPage() {
 
   const schema = yup.object().shape({
     email: yup.string().email().required(),
-    password: yup.string().required().max(32).min(8).matches(regex),
+    password: yup
+      .string()
+      .required()
+      .max(32)
+      .min(8)
+      .matches(regex, "Incorrect Password"),
   })
 
   const onSubmit = (submittedData) => {
     console.log(submittedData)
-    // localStorage.setItem("currentLoggedInUser", JSON.stringify(submittedData))
+    // localStorage.setItem("currentLoggedInUser", JSON.stringify(submittedData));
     const allUsersData = JSON.parse(localStorage.getItem("users"))
     console.log(allUsersData)
     const userData = allUsersData?.filter((user) => {
@@ -41,12 +46,12 @@ export default function LoginPage() {
         auth.login(userData[0])
         navigate("/products", { replace: true })
       } else {
-        setError("Password not match.")
+        setError("Password does not match.")
       }
 
       console.log(result)
     } else {
-      setError("User doesn't exists.")
+      setError("User doesn't exist.")
     }
     return
   }
@@ -58,37 +63,63 @@ export default function LoginPage() {
   } = useForm({ resolver: yupResolver(schema) })
 
   return (
-    <div>
-      {error && <p>{error}</p>}
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="input-div">
-          <label htmlFor="email">Email</label>
-          <input
-            type="text"
-            placeholder="Email"
-            name="email"
-            {...register("email")}
-          />
-        </div>
-        {errors.email && <h4 className="error">{errors.email.message}</h4>}
+    <div className="container h-100">
+      {error && <p className="alert alert-danger">{error}</p>}
+      <div className="row align-items-center" style={{ height: "100vh" }}>
+        <div className="mx-auto col-10 col-md-8 col-lg-6">
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="p-4 border rounded bg-white"
+          >
+            <h3 className="text-center mb-4">Login Form</h3>
 
-        <div className="input-div">
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            placeholder="password"
-            name="password"
-            {...register("password")}
-          />
+            <div className="mb-3">
+              <label htmlFor="email" className="form-label">
+                Email
+              </label>
+              <input
+                className="form-control"
+                type="text"
+                placeholder="Email"
+                name="email"
+                {...register("email")}
+              />
+              <div className="form-text">
+                {errors.email && (
+                  <p className="text-danger">{errors.email.message}</p>
+                )}
+              </div>
+            </div>
+
+            <div className="mb-3">
+              <label htmlFor="password" className="form-label">
+                Password
+              </label>
+              <input
+                className="form-control"
+                type="password"
+                placeholder="Password"
+                name="password"
+                {...register("password")}
+              />
+              <div className="form-text">
+                {errors.password && (
+                  <p className="text-danger">{errors.password.message}</p>
+                )}
+              </div>
+            </div>
+
+            <div className="text-center mb-2">
+              <button type="submit" className="btn btn-primary">
+                Login
+              </button>
+            </div>
+            <div className="text-center">
+              Don't have an account? <Link to="/signup">Signup Here</Link>
+            </div>
+          </form>
         </div>
-        {errors.password && (
-          <h4 className="error">{errors.password.message}</h4>
-        )}
-        <div>
-          <button type="submit">Login</button>
-          <Link to="/signup">SignUp</Link>
-        </div>
-      </form>
+      </div>
     </div>
   )
 }
